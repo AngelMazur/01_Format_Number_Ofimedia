@@ -1,92 +1,156 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-import { WrapperContent, Title } from './formatNumber.style.js'
+import {
+  Button,
+  Form,
+  TextNumber,
+  List,
+  Preview,
+  Title,
+} from './formatNumber.style.js'
+
 const FormatNumber = () => {
-  // LOGIC
-  const [number, setNumber] = useState([])
-  console.log({ number })
-  const [finalNumber, setFinalNumber] = useState([])
-
- 
   // SORT ARRAY
   let arr = [
-    '123-123-123',
+    'vf123123123',
+    '00123456789',
     '456-789-123',
     '789-123-456',
-    '123-456-789',
     '987-654-321',
   ]
 
-  let arrOrder = arr.sort((a, b) => a.localeCompare(b))
+  // REFS
+  const inputNumber = useRef(null)
+
+  // STATE
+  const [number, setNumber] = useState([])
+  const [numberList, setNumberList] = useState([])
+
+  // TODO: sort numberList
+  const arrOrder = (arr) => arr.sort((a, b) => a.localeCompare(b))
 
   // APPLY FORMAT ARRAY
-  const applyFormat = () => {
+  const applyFormat = (unformattedNumber) => {
     const removeCharacters = (n) => {
-      let finalNum = n.map((element) => {
-        let nFormatC = element.replaceAll("'", '')
-        let nFormatG = element.replaceAll('-', '')
-        console.log({ nFormatC })
-        console.log({ nFormatG })
-        const condition = nFormatC.length <= 9 || nFormatG.length <= 9
-        if (condition) {
-          return nFormatG, nFormatC
-        } else {
-          return element.slice(2)
-        }
-      })
-      // const FNL =  finalNum.slice(9)
-      // console.log(FNL)
-      // return FNL
-      return finalNum
+      let numberWithReplacements = n.replaceAll("'", '').replaceAll('-', '')
+
+      if (numberWithReplacements.length < 12) {
+        return numberWithReplacements
+      } else {
+        return n.slice(2)
+      }
     }
-    console.log(removeCharacters(number))
-    const applySeparator = (num, separator = '-') => {
-      const number = String(num)
+
+    const applySeparator = (number, separator = '-') => {
       let part = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
       return part
     }
-    const finalFormat = applySeparator(removeCharacters(number))
-    setFinalNumber(finalFormat)
-    console.log({ finalFormat })
+
+    const finalFormat = applySeparator(removeCharacters(unformattedNumber))
+    console.log(
+      '🚀 ~ file: index.js ~ line 59 ~ applyFormat ~ finalFormat',
+      finalFormat
+    )
+
     return finalFormat
   }
-  const FF = applyFormat
+
+  const applyFormatArray = (unformattedNumber) => {
+    const formatNumbers = (n) => {
+      const mapArray = n.map((element) => {
+        let numberWithReplacements = element
+          .replaceAll("'", '')
+          .replaceAll('-', '')
+
+        const numberWithSlice = element.slice(2)
+
+        const applySeparator = (number, separator = '-') => {
+          let part = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+          return part
+        }
+
+        if (numberWithReplacements.length <= 10) {
+          return applySeparator(numberWithReplacements)
+        } else {
+          return applySeparator(numberWithSlice)
+        }
+      })
+
+      return mapArray
+    }
+    const finalFormat = formatNumbers(unformattedNumber)
+    return finalFormat
+  }
+
   //EVENTS LAYOUT
   const addArray = () => {
-    const newNumber = document.getElementById('text').value
-    console.log({newNumber})
-      setNumber(prevState =>[...prevState, newNumber])
+    const newNumber = number
+    const splitNumber = newNumber.split('\n')
+
+    const formattedNumber = applyFormatArray(splitNumber)
+
+    const sortedNumberListArray = arrOrder(numberList.concat(formattedNumber))
+    setNumberList(sortedNumberListArray)
+
+    inputNumber.current.value = ''
   }
 
   const onValueChange = (event) => {
     setNumber(event.target.value)
   }
 
-
-  // console.log(addArray('1'))
-  // console.log(addArray('2'))
-  // console.log(addArray('3'))
   const onKeyUp = (e) => {
-    if (e.key === 'Enter') return addArray()
+    if (e.key === 'Enter') {
+      const newNumber = number
+      console.log(
+        '🚀 ~ file: index.js ~ line 130 ~ onKeyUp ~ number',
+        number.length
+      )
+
+      const formattedNumber = applyFormat(newNumber)
+
+      const sortedNumberList = arrOrder(numberList.concat(formattedNumber))
+      setNumberList(sortedNumberList)
+      //TODO: agregar logica para que no pueda dar intro con más de 12 caracteres
+      if (sortedNumberList.length > 12) {
+        number = null
+      }
+      {
+        sortedNumberList
+      }
+      // sortedNumberList.length > 12 ? null : sortedNumberList
+
+      inputNumber.current.value = ''
+    }
   }
+
   return (
     <>
-      <WrapperContent>
-        <Title>Ingresa los números</Title>
-        <textarea
-          type="text"
-          id='text'
-          placeholder="Buscar"
+      <Title>Ingresa los números</Title>
+
+      <Form>
+        <TextNumber
           cols="100"
-          rows="10"
+          id="text"
+          // maxLength="12"
           onChange={onValueChange}
           onKeyUp={onKeyUp}
-          // value={number}
+          placeholder="Buscar"
+          ref={inputNumber}
+          rows="10"
+          type="text"
         />
-        <button onClick={addArray}>Añadir</button>
-        <button onClick={applyFormat}>Formatear</button>
-        <div>{finalNumber}</div>
-      </WrapperContent>
+
+        <Button onClick={addArray}>Añadir</Button>
+      </Form>
+
+      <Preview>
+        <ol className="NumberList">
+          {numberList.map((numberListItem) => (
+            <List key={numberListItem}>{numberListItem}</List>
+          ))}
+        </ol>
+      </Preview>
     </>
   )
 }
