@@ -1,13 +1,13 @@
 import FormatNumber from '@Components/FormatNumber'
-import { WrapperContent, Title } from './style/home.style'
+import { AppWrapperContent, AppTitle } from './style/home.style'
 
 const Home = () => {
   return (
     <>
-      <WrapperContent>
-        <Title>Formateador de números Ofimedia</Title>
+      <AppWrapperContent>
+        <AppTitle>Formateador de números Ofimedia</AppTitle>
         <FormatNumber />
-      </WrapperContent>
+      </AppWrapperContent>
     </>
   )
 }
