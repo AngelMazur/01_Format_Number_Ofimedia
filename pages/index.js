@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <>
       <AppWrapperContent>
-        <AppTitle>Formateador de números Ofimedia</AppTitle>
+        <AppTitle>Formateador de números Mazur</AppTitle>
         <FormatNumber />
       </AppWrapperContent>
     </>

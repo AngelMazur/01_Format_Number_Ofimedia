@@ -15,17 +15,19 @@ const FormatNumber = () => {
     'vf123123123',
     '00123456789',
     '456-789-123',
-    '789-123-456',
-    '987-654-321',
+    "789'123'456",
+    '987654321',
   ]
 
   // REFS
   const inputNumber = useRef(null)
 
   // STATE
-  const [number, setNumber] = useState([])
+  const [number, setNumber] = useState(false, [])
   const [numberList, setNumberList] = useState([])
+  console.log("🚀 ~ file: index.js ~ line 28 ~ FormatNumber ~ numberList", numberList)
 
+  console.log("🚀 ~ file: index.js ~ line 32 ~ FormatNumber ~ number", number)
   // TODO: sort numberList
   const arrOrder = (arr) => arr.sort((a, b) => a.localeCompare(b))
 
@@ -42,15 +44,11 @@ const FormatNumber = () => {
     }
 
     const applySeparator = (number, separator = '-') => {
-      let part = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-      return part
+      let replaceNumber = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+      return replaceNumber
     }
 
     const finalFormat = applySeparator(removeCharacters(unformattedNumber))
-    console.log(
-      '🚀 ~ file: index.js ~ line 59 ~ applyFormat ~ finalFormat',
-      finalFormat
-    )
 
     return finalFormat
   }
@@ -65,8 +63,8 @@ const FormatNumber = () => {
         const numberWithSlice = element.slice(2)
 
         const applySeparator = (number, separator = '-') => {
-          let part = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-          return part
+          let replaceNumber = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+          return replaceNumber
         }
 
         if (numberWithReplacements.length <= 10) {
@@ -86,13 +84,13 @@ const FormatNumber = () => {
   const addArray = () => {
     const newNumber = number
     const splitNumber = newNumber.split('\n')
-
     const formattedNumber = applyFormatArray(splitNumber)
 
     const sortedNumberListArray = arrOrder(numberList.concat(formattedNumber))
     setNumberList(sortedNumberListArray)
 
     inputNumber.current.value = ''
+    setNumber(false)
   }
 
   const onValueChange = (event) => {
@@ -101,27 +99,34 @@ const FormatNumber = () => {
 
   const onKeyUp = (e) => {
     if (e.key === 'Enter') {
-      const newNumber = number
-      console.log(
-        '🚀 ~ file: index.js ~ line 130 ~ onKeyUp ~ number',
-        number.length
-      )
+      if (number != '\n') {
+        const newNumber = number
 
-      const formattedNumber = applyFormat(newNumber)
+        if (number.length > 12) {
+          number
+        } else {
+          const formattedNumber = applyFormat(newNumber)
 
-      const sortedNumberList = arrOrder(numberList.concat(formattedNumber))
-      setNumberList(sortedNumberList)
-      //TODO: agregar logica para que no pueda dar intro con más de 12 caracteres
-      if (sortedNumberList.length > 12) {
-        number = null
+          const sortedNumberList = arrOrder(numberList.concat(formattedNumber))
+
+          setNumberList(sortedNumberList)
+
+          inputNumber.current.value = ''
+
+          setNumber(false)
+        }
+      } else {
+        setNumber(false)
+        inputNumber.current.value = ''
       }
-      {
-        sortedNumberList
-      }
-      // sortedNumberList.length > 12 ? null : sortedNumberList
-
-      inputNumber.current.value = ''
     }
+  }
+
+  const deleteDuplicates = () => {
+    const result = numberList.filter((item, index) => {
+      return numberList.indexOf(item) === index
+    })
+    setNumberList(result)
   }
 
   return (
@@ -141,7 +146,13 @@ const FormatNumber = () => {
           type="text"
         />
 
-        <Button onClick={addArray}>Añadir</Button>
+        <Button
+          onClick={addArray}
+          disabled={!number}
+          >
+          Añadir
+        </Button>
+        <Button onClick={deleteDuplicates} disabled={!numberList}>Eliminar duplicados</Button>
       </Form>
 
       <Preview>

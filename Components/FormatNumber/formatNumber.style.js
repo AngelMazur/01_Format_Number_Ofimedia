@@ -15,11 +15,19 @@ export const Button = styled.button`
   padding-top: calc(0.5em - 1px);
   text-align: center;
   white-space: nowrap;
+
+  ${({ disabled }) =>
+    disabled &&
+    `
+    color: grey;
+    opacity: 0.7;
+    cursor: default;
+  `}
 `
 export const Form = styled.section`
   align-content: center;
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3fr;
   gap: 0.5em;
   justify-content: center;
   margin: 20px;
@@ -42,7 +50,7 @@ export const TextNumber = styled.textarea`
 `
 
 export const List = styled.li`
-&::marker {
+  &::marker {
     color: #000;
     font-weight: bold;
     font-size: 14px;
