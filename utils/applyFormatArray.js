@@ -12,7 +12,8 @@ export const applyFormatArray = (unformattedNumber) => {
         return replaceNumber
       }
       if (numberWithReplacements.length > 15){
-        return alert(`${element} FORMATO NO VALIDO`)
+        alert(`${element} FORMATO NO VALIDO`)
+        return element
       }
       if (numberWithReplacements.length <= 10) {
         return applySeparator(numberWithReplacements)
