@@ -1,5 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import { saveAs } from 'file-saver'
+import { applyFormatArray } from '../../utils/applyFormatArray'
+import { applyFormatNumber } from '../../utils/applyFormatNumber'
 
+//STYLE
 import {
   Button,
   Form,
@@ -9,90 +13,19 @@ import {
   Title,
 } from './formatNumber.style.js'
 
+//TODO: Revisar eliminar duplicados con diferentes formatos de array a solo número
 const FormatNumber = () => {
-  // SORT ARRAY
-  let arr = [
-    'vf123123123',
-    '00123456789',
-    '456-789-123',
-    "789'123'456",
-    '987654321',
-  ]
-
   // REFS
   const inputNumber = useRef(null)
 
   // STATE
   const [number, setNumber] = useState(false, [])
   const [numberList, setNumberList] = useState([])
-  console.log("🚀 ~ file: index.js ~ line 28 ~ FormatNumber ~ numberList", numberList)
 
-  console.log("🚀 ~ file: index.js ~ line 32 ~ FormatNumber ~ number", number)
-  // TODO: sort numberList
+  // SORT ARRAY
   const arrOrder = (arr) => arr.sort((a, b) => a.localeCompare(b))
 
-  // APPLY FORMAT ARRAY
-  const applyFormat = (unformattedNumber) => {
-    const removeCharacters = (n) => {
-      let numberWithReplacements = n.replaceAll("'", '').replaceAll('-', '')
-
-      if (numberWithReplacements.length < 12) {
-        return numberWithReplacements
-      } else {
-        return n.slice(2)
-      }
-    }
-
-    const applySeparator = (number, separator = '-') => {
-      let replaceNumber = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-      return replaceNumber
-    }
-
-    const finalFormat = applySeparator(removeCharacters(unformattedNumber))
-
-    return finalFormat
-  }
-
-  const applyFormatArray = (unformattedNumber) => {
-    const formatNumbers = (n) => {
-      const mapArray = n.map((element) => {
-        let numberWithReplacements = element
-          .replaceAll("'", '')
-          .replaceAll('-', '')
-
-        const numberWithSlice = element.slice(2)
-
-        const applySeparator = (number, separator = '-') => {
-          let replaceNumber = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-          return replaceNumber
-        }
-
-        if (numberWithReplacements.length <= 10) {
-          return applySeparator(numberWithReplacements)
-        } else {
-          return applySeparator(numberWithSlice)
-        }
-      })
-
-      return mapArray
-    }
-    const finalFormat = formatNumbers(unformattedNumber)
-    return finalFormat
-  }
-
   //EVENTS LAYOUT
-  const addArray = () => {
-    const newNumber = number
-    const splitNumber = newNumber.split('\n')
-    const formattedNumber = applyFormatArray(splitNumber)
-
-    const sortedNumberListArray = arrOrder(numberList.concat(formattedNumber))
-    setNumberList(sortedNumberListArray)
-
-    inputNumber.current.value = ''
-    setNumber(false)
-  }
-
   const onValueChange = (event) => {
     setNumber(event.target.value)
   }
@@ -105,7 +38,7 @@ const FormatNumber = () => {
         if (number.length > 12) {
           number
         } else {
-          const formattedNumber = applyFormat(newNumber)
+          const formattedNumber = applyFormatNumber(newNumber)
 
           const sortedNumberList = arrOrder(numberList.concat(formattedNumber))
 
@@ -122,11 +55,52 @@ const FormatNumber = () => {
     }
   }
 
+  const addArray = () => {
+    const newNumber = number
+    const splitNumber = newNumber.split('\n')
+    const formattedNumber = applyFormatArray(splitNumber)
+
+    const sortedNumberListArray = arrOrder(numberList.concat(formattedNumber))
+    setNumberList(sortedNumberListArray)
+
+    inputNumber.current.value = ''
+    setNumber(false)
+  }
+
   const deleteDuplicates = () => {
-    const result = numberList.filter((item, index) => {
+    const stringList = numberList.toString()
+    const data = stringList.replaceAll('\n', '')
+    const arrList = data.split(',')
+    const result = arrList.filter((item, index) => {
       return numberList.indexOf(item) === index
     })
     setNumberList(result)
+  }
+
+  const downloadFile = () => {
+    const fecha = new Date()
+    const hoy = fecha.toLocaleDateString()
+
+    const data = numberList.toString().replaceAll(',', '\n')
+
+    const blob = new Blob([data], {
+      type: 'text/plain;charset=utf-8',
+      endings: 'native',
+    })
+
+    saveAs(blob, `claves_fabricante_${hoy}`)
+    window.location.reload()
+  }
+
+  const arrayOptions = () => {
+    if (numberList.length > 0) {
+      return (
+        <>
+          <Button onClick={deleteDuplicates}>Eliminar duplicados</Button>
+          <Button onClick={downloadFile}>Descargar</Button>
+        </>
+      )
+    }
   }
 
   return (
@@ -137,7 +111,6 @@ const FormatNumber = () => {
         <TextNumber
           cols="100"
           id="text"
-          // maxLength="12"
           onChange={onValueChange}
           onKeyUp={onKeyUp}
           placeholder="Buscar"
@@ -146,19 +119,16 @@ const FormatNumber = () => {
           type="text"
         />
 
-        <Button
-          onClick={addArray}
-          disabled={!number}
-          >
+        <Button onClick={addArray} disabled={!number}>
           Añadir
         </Button>
-        <Button onClick={deleteDuplicates} disabled={!numberList}>Eliminar duplicados</Button>
+        {arrayOptions()}
       </Form>
 
       <Preview>
         <ol className="NumberList">
-          {numberList.map((numberListItem) => (
-            <List key={numberListItem}>{numberListItem}</List>
+          {numberList.map((numberListItem, i) => (
+            <List key={i}>{numberListItem}</List>
           ))}
         </ol>
       </Preview>

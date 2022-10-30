@@ -15,6 +15,7 @@ export const Button = styled.button`
   padding-top: calc(0.5em - 1px);
   text-align: center;
   white-space: nowrap;
+  width:70%;
 
   ${({ disabled }) =>
     disabled &&
@@ -27,9 +28,10 @@ export const Button = styled.button`
 export const Form = styled.section`
   align-content: center;
   display: grid;
-  grid-template-columns: 3fr;
+  grid-template-columns: 4fr;
   gap: 0.5em;
   justify-content: center;
+  justify-items: center;
   margin: 20px;
 `
 export const TextNumber = styled.textarea`
@@ -43,7 +45,7 @@ export const TextNumber = styled.textarea`
   color: #363636;
   display: block;
   font-size: 1.2rem;
-  max-width: 100%;
+  max-width: 70%;
   outline: none;
   padding: 0.5em 1.5em;
   width: 100%;
