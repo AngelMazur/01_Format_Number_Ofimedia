@@ -107,7 +107,7 @@ const FormatNumber = () => {
 
   return (
     <>
-      <Title>Ingresavercel números</Title>
+      <Title>Ingresa números</Title>
 
       <Form>
         <TextNumber
