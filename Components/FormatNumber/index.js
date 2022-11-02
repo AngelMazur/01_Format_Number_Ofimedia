@@ -13,7 +13,7 @@ import {
   Title,
 } from './formatNumber.style.js'
 
-//TODO: Revisar eliminar duplicados con diferentes formatos de array a solo número
+//TODO: Editar NumberList
 const FormatNumber = () => {
   // REFS
   const inputNumber = useRef(null)
@@ -21,6 +21,13 @@ const FormatNumber = () => {
   // STATE
   const [number, setNumber] = useState(false, [])
   const [numberList, setNumberList] = useState([])
+  const stringList = numberList.toString()
+  const data = stringList.replaceAll('\n', '')
+  const arrList = data.split(',')
+  console.log(
+    '🚀 ~ file: index.js ~ line 24 ~ FormatNumber ~ arrList',
+    arrList
+  )
 
   // SORT ARRAY
   const arrOrder = (arr) => arr.sort((a, b) => a.localeCompare(b))
@@ -68,20 +75,18 @@ const FormatNumber = () => {
   }
 
   const deleteDuplicates = () => {
-    const stringList = numberList.toString()
-    const data = stringList.replaceAll('\n', '')
-    const arrList = data.split(',')
-    const result = arrList.filter((item, index) => {
+    const deletedEmpty = arrList.filter(Boolean)
+    const deletedDuplicates = deletedEmpty.filter((item, index) => {
       return numberList.indexOf(item) === index
     })
-    setNumberList(result)
+    setNumberList(deletedDuplicates)
   }
 
   const downloadFile = () => {
     const fecha = new Date()
     const hoy = fecha.toLocaleDateString()
 
-    const data = numberList.toString().replaceAll(',', '\n')
+    const data = arrList.toString().replaceAll(',', '\n')
 
     const blob = new Blob([data], {
       type: 'text/plain;charset=utf-8',
@@ -126,7 +131,11 @@ const FormatNumber = () => {
       </Form>
 
       <Preview>
-        <ol className="NumberList">
+        <ol
+          className="NumberList"
+          contentEditable={true}
+          suppressContentEditableWarning={true}
+        >
           {numberList.map((numberListItem, i) => (
             <List key={i}>{numberListItem}</List>
           ))}
