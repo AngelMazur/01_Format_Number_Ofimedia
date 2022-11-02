@@ -14,6 +14,7 @@ import {
 } from './formatNumber.style.js'
 
 //TODO: Editar NumberList
+//TODO: Hacer pagina de cargando
 const FormatNumber = () => {
   // REFS
   const inputNumber = useRef(null)
@@ -24,10 +25,6 @@ const FormatNumber = () => {
   const stringList = numberList.toString()
   const data = stringList.replaceAll('\n', '')
   const arrList = data.split(',')
-  console.log(
-    '🚀 ~ file: index.js ~ line 24 ~ FormatNumber ~ arrList',
-    arrList
-  )
 
   // SORT ARRAY
   const arrOrder = (arr) => arr.sort((a, b) => a.localeCompare(b))
@@ -77,7 +74,7 @@ const FormatNumber = () => {
   const deleteDuplicates = () => {
     const deletedEmpty = arrList.filter(Boolean)
     const deletedDuplicates = deletedEmpty.filter((item, index) => {
-      return numberList.indexOf(item) === index
+      return deletedEmpty.indexOf(item) === index
     })
     setNumberList(deletedDuplicates)
   }
@@ -133,8 +130,8 @@ const FormatNumber = () => {
       <Preview>
         <ol
           className="NumberList"
-          contentEditable={true}
-          suppressContentEditableWarning={true}
+          // contentEditable={true}
+          // suppressContentEditableWarning={true}
         >
           {numberList.map((numberListItem, i) => (
             <List key={i}>{numberListItem}</List>
