@@ -107,7 +107,7 @@ const FormatNumber = () => {
 
   return (
     <>
-      <Title>Ingresa los números</Title>
+      <Title>Ingresavercel números</Title>
 
       <Form>
         <TextNumber
@@ -115,7 +115,7 @@ const FormatNumber = () => {
           id="text"
           onChange={onValueChange}
           onKeyUp={onKeyUp}
-          placeholder="Buscar"
+          placeholder="Convertir"
           ref={inputNumber}
           rows="10"
           type="text"
