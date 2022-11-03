@@ -1,16 +1,27 @@
+import { useEffect, useState } from 'react'
+
 import Layout from './Layout'
+import LoadingScreen from '@Components/loader'
 
 function MyApp({ Component, pageProps }) {
-  //El componente app puede recibir:
-  //Providers - Context/Provider, Theme, data
-  //Layout - Componente que se encarga de renderizar el layout
-  //Props adicionales
+  const [loading, setLoading] = useState(false)
+  console.log("🚀 ~ file: _app.js ~ line 8 ~ MyApp ~ loading", loading)
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <>
+      {loading ? (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      ) : (
+        <LoadingScreen />
+      )}
+    </>
   )
 }
-
 
 export default MyApp
