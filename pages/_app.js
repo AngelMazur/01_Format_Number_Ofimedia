@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import Layout from './Layout'
-import LoadingScreen from '@Components/loader'
+import LoadingScreen from '@Components/Loader'
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)
-  console.log("🚀 ~ file: _app.js ~ line 8 ~ MyApp ~ loading", loading)
 
   useEffect(() => {
     setLoading(true)
