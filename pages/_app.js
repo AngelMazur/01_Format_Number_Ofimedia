@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
   console.log("🚀 ~ file: _app.js ~ line 8 ~ MyApp ~ loading", loading)
 
   useEffect(() => {
-    setLoading(false)
+    setLoading(true)
   }, [])
 
   return (
