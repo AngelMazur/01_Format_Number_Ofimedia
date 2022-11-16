@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import Layout from './Layout'
-import LoadingScreen from '@Components/Loader'
+import LoadingScreen from 'src/Components/Loader'
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false)

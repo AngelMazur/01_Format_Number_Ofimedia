@@ -1,5 +1,5 @@
-import FormatNumber from '@Components/FormatNumber'
-import { AppWrapperContent, AppTitle } from '../home.style'
+import FormatNumber from 'src/Components/FormatNumber'
+import { AppWrapperContent, AppTitle } from '../style/home.style'
 
 const Home = () => {
   return (
