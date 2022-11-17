@@ -31,6 +31,8 @@ Esta web convierte cualquiera de las siguientes cadenas de números donde `*` es
  Se pueden ingresar tantas cadenas como se deseen y existen dos maneras de ingresar dichas cadenas.
 
  1. Cadena por cadena, introduciendo `intro` después de cada cadena para su posterior conversión
- 2. Bloque de varias cadenas usando el botón de añadir para su posterior conversión
+ 2. Bloque de varias cadenas usando el botón de añadir para su posterior conversión.
 
- Una vez estén las conversiones hechas es posible eliminar cadenas duplicadas además de su descarga en formato.txt con la fecha del día actual
+ Una vez se hayan realizado las conversiones es posible eliminar cadenas duplicadas, además de su descarga en formato.txt con la fecha actual.
+
+
