@@ -13,8 +13,7 @@ import {
   Title,
 } from './formatNumber.style.js'
 
-//TODO: Editar NumberList
-//TODO: Hacer pagina de cargando
+//TODO: mejorar rendimiento con react.memo
 const FormatNumber = () => {
   // REFS
   const inputNumber = useRef(null)
@@ -38,9 +37,13 @@ const FormatNumber = () => {
     if (e.key === 'Enter') {
       if (number != '\n') {
         const newNumber = number
+        const enter = '\n'
 
         if (number.length > 12) {
-          number
+          if (enter && number.length >= 13  && number.length < 20) {
+            alert(`${number} FORMATO NO VALIDO`)
+            return inputNumber.current.value = ''
+          } else number
         } else {
           const formattedNumber = applyFormatNumber(newNumber)
 
@@ -71,8 +74,14 @@ const FormatNumber = () => {
     setNumber(false)
   }
 
-  const deleteDuplicates = () => {
-    const deletedEmpty = arrList.filter(Boolean)
+  const numberDeleted = () => {
+    const deletedLongNumber = arrList.filter(item => {
+      const n = item.length
+      if(n === 11){
+        return item
+      }
+    })
+    const deletedEmpty = deletedLongNumber.filter(Boolean)
     const deletedDuplicates = deletedEmpty.filter((item, index) => {
       return deletedEmpty.indexOf(item) === index
     })
@@ -98,7 +107,7 @@ const FormatNumber = () => {
     if (numberList.length > 0) {
       return (
         <>
-          <Button onClick={deleteDuplicates}>Eliminar duplicados</Button>
+          <Button onClick={numberDeleted}>Eliminar duplicados</Button>
           <Button onClick={downloadFile}>Descargar</Button>
         </>
       )

@@ -1,7 +1,6 @@
 export const applyFormatNumber = (unformattedNumber) => {
   const removeCharacters = (n) => {
     let numberWithReplacements = n.replaceAll("'", '').replaceAll('-', '')
-
     if (numberWithReplacements.length < 12) {
       return numberWithReplacements
     } else {

@@ -4,6 +4,7 @@ export const applyFormatArray = (unformattedNumber) => {
       let numberWithReplacements = element
         .replaceAll("'", '')
         .replaceAll('-', '')
+      console.log("🚀 ~ file: applyFormatArray.js ~ line 7 ~ mapArray ~ numberWithReplacements", numberWithReplacements.length)
 
       const numberWithSlice = element.slice(2)
 
@@ -11,7 +12,7 @@ export const applyFormatArray = (unformattedNumber) => {
         let replaceNumber = number.replace(/\B(?=(\d{3})+(?!\d))/g, separator)
         return replaceNumber
       }
-      if (numberWithReplacements.length > 15){
+      if (numberWithReplacements.length > 11){
         alert(`${element} FORMATO NO VALIDO`)
         return element
       }
