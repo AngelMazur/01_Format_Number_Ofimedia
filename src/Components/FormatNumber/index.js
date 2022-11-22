@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { saveAs } from 'file-saver'
-import { applyFormatArray } from '../../utils/applyFormatArray'
-import { applyFormatNumber } from '../../utils/applyFormatNumber'
+import { applyFormatArray } from '@utils/applyFormatArray'
+import { applyFormatNumber } from '@utils/applyFormatNumber'
 
 //STYLE
 import {
