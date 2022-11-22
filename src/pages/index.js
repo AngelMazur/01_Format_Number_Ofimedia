@@ -1,4 +1,4 @@
-import FormatNumber from 'src/Components/FormatNumber'
+import FormatNumber from '@Components/FormatNumber'
 import { AppWrapperContent, AppTitle } from '../style/home.style'
 
 const Home = () => {
